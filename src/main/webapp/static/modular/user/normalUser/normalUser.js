@@ -19,7 +19,7 @@ NormalUser.initColumn = function () {
             {title: '名字', field: 'name', visible: true, align: 'center', valign: 'middle'},
             // {title: '生日', field: 'birthday', visible: true, align: 'center', valign: 'middle'},
             {title: '性别', field: 'sexName', visible: true, align: 'center', valign: 'middle'},
-            // {title: '电子邮件', field: 'email', visible: true, align: 'center', valign: 'middle'},
+            {title: '部门', field: 'deptName', visible: true, align: 'center', valign: 'middle'},
             {title: '电话', field: 'phone', visible: true, align: 'center', valign: 'middle'},
             {title: '状态', field: 'statusName', visible: true, align: 'center', valign: 'middle'},
             {title: '职位', field: 'deptstr', visible: true, align: 'center', valign: 'middle'},
@@ -98,7 +98,13 @@ NormalUser.delete = function () {
 NormalUser.search = function () {
     var queryData = {};
     queryData['name'] = $("#s_name").val();
+    queryData['deptid'] = NormalUser.deptid;
     NormalUser.table.refresh({query: queryData});
+};
+
+NormalUser.onClickDept = function (e, treeId, treeNode) {
+    NormalUser.deptid = treeNode.id;
+    NormalUser.search();
 };
 
 $(function () {
@@ -106,4 +112,8 @@ $(function () {
     var table = new BSTable(NormalUser.id, "/normalUser/list", defaultColunms);
     table.setPaginationType("client");
     NormalUser.table = table.init();
+
+    var ztree = new $ZTree("deptTree", "/dept/treeByTopId?topTreeId=28");
+    ztree.bindOnClick(NormalUser.onClickDept);
+    ztree.init();
 });

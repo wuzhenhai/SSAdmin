@@ -28,6 +28,5 @@ public interface NormalUserMapper extends BaseMapper<NormalUser> {
     /**
      * 根据条件查询用户列表
      */
-    List<Map<String, Object>> selectUsers(@Param("dataScope") DataScope dataScope, @Param("name") String name, @Param("beginTime") String beginTime, @Param("endTime") String endTime);
-
+    List<Map<String, Object>> selectUsers(@Param("dataScope") DataScope dataScope, @Param("name") String name, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deptid") Integer deptid);
 }

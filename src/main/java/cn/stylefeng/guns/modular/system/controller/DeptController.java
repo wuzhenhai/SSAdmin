@@ -95,6 +95,17 @@ public class DeptController extends BaseController {
     }
 
     /**
+     * 获取部门的tree列表
+     */
+    @RequestMapping(value = "/treeByTopId")
+    @ResponseBody
+    public List<ZTreeNode> treeByTopId(@RequestParam(required = false) Integer topTreeId) {
+        List<ZTreeNode> tree = this.deptService.getTreeByTopId(topTreeId);
+        //tree.add(ZTreeNode.createParent());
+        return tree;
+    }
+
+    /**
      * 新增部门
      */
     @BussinessLog(value = "添加部门", key = "simplename", dict = DeptDict.class)

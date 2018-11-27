@@ -23,6 +23,6 @@ public interface INormalUserService extends IService<NormalUser> {
     /**
      * 根据条件查询用户列表
      */
-    List<Map<String, Object>> selectUsers(DataScope dataScope, String name, String beginTime, String endTime);
+    List<Map<String, Object>> selectUsers(DataScope dataScope, String name, String beginTime, String endTime,Integer deptid);
 
 }

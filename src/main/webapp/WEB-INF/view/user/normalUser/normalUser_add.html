@@ -14,6 +14,9 @@
                         <option value="2">女</option>
                     </#select>
                     <#input id="email" name="电子邮件" underline="true"/>
+                    <#input id="citySel" name="部门" underline="true" readonly="readonly" hidden="deptid" hiddenValue="" value=""
+                            clickFun="NormalUserInfoDlg.showDeptSelectTree(); return false;"
+                            style="background-color: #ffffff !important;"/>
                     <#input id="phone" name="电话" underline="true"/>
                     <#select id="status" name="状态" underline="true">
                         <option value="1">启用</option>

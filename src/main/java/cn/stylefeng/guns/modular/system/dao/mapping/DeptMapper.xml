@@ -26,6 +26,18 @@
 		) as isOpen from sys_dept
 	</select>
 
+    <select id="getTreeByTopId" resultType="cn.stylefeng.guns.core.common.node.ZTreeNode">
+        select id,pid as pId,simplename as name,
+        (
+        CASE
+        WHEN (id = #{topTreeId} OR pId IS NULL) THEN
+        'true'
+        ELSE
+        'false'
+        END
+        ) as isOpen from sys_dept where id = #{topTreeId} or pids like CONCAT('%[', #{topTreeId},']%')
+    </select>
+
     <select id="list" resultType="map">
         select * from sys_dept
         <if test="condition != null and condition != ''">

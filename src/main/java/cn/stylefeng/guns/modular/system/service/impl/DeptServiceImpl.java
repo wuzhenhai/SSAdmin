@@ -62,6 +62,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     }
 
     @Override
+    public List<ZTreeNode> getTreeByTopId(Integer topTreeId) {
+        return this.baseMapper.getTreeByTopId(topTreeId);
+    }
+
+    @Override
     public List<Map<String, Object>> list(String condition) {
         return this.baseMapper.list(condition);
     }

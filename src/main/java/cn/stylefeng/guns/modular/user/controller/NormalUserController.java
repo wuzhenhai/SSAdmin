@@ -1,5 +1,6 @@
 package cn.stylefeng.guns.modular.user.controller;
 
+import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
@@ -60,6 +61,7 @@ public class NormalUserController extends BaseController {
     public String normalUserUpdate(@PathVariable Integer normalUserId, Model model) {
         NormalUser normalUser = normalUserService.selectById(normalUserId);
         model.addAttribute("item",normalUser);
+        model.addAttribute("deptName", ConstantFactory.me().getDeptName(normalUser.getDeptid()));
         LogObjectHolder.me().set(normalUser);
         return PREFIX + "normalUser_edit.html";
     }
@@ -69,8 +71,8 @@ public class NormalUserController extends BaseController {
      */
     @RequestMapping(value = "/list")
     @ResponseBody
-    public Object list(@RequestParam(required = false) String name, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime) {
-        List<Map<String, Object>> users = normalUserService.selectUsers(null,name,beginTime,endTime);
+    public Object list(@RequestParam(required = false) String name, @RequestParam(required = false) String beginTime, @RequestParam(required = false) String endTime,@RequestParam(required = false) Integer deptid) {
+        List<Map<String, Object>> users = normalUserService.selectUsers(null,name,beginTime,endTime,deptid);
         return new NormalUserWarpper(users).wrap();
     }
 
