@@ -32,6 +32,9 @@
                @if(isNotEmpty(disabled)){
                     disabled="${disabled}"
                @}
+               @if(isNotEmpty(type)){
+               type="${type}"
+               @}
         >
         @if(isNotEmpty(hidden)){
             <input class="form-control" type="hidden" id="${hidden}" value="${hiddenValue!}">

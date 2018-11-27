@@ -243,6 +243,7 @@ public class ConstantFactory implements IConstantFactory {
      * 根据字典名称和字典中的值获取对应的名称
      */
     @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'" + CacheKey.DICT_NAME + "'+#name + #val")
     public String getDictsByName(String name, Integer val) {
         Dict temp = new Dict();
         temp.setName(name);
@@ -266,6 +267,7 @@ public class ConstantFactory implements IConstantFactory {
      * 获取性别名称
      */
     @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'sex'")
     public String getSexName(Integer sex) {
         return getDictsByName("性别", sex);
     }

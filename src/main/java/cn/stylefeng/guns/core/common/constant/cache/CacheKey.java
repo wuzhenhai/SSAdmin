@@ -43,4 +43,9 @@ public interface CacheKey {
      */
     String DEPT_NAME = "dept_name_";
 
+    /**
+     * 部门名称
+     */
+    String DICT_NAME = "dict_name_";
+
 }
