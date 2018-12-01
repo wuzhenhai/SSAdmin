@@ -9,6 +9,7 @@ import cn.stylefeng.guns.modular.system.warpper.UserWarpper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.ui.Model;
@@ -128,6 +129,22 @@ public class NormalUserController extends BaseController {
     @ResponseBody
     public Object detail(@PathVariable("normalUserId") Integer normalUserId) {
         return normalUserService.selectById(normalUserId);
+    }
+
+    /**
+     * 普通用户详情
+     */
+    @RequestMapping(value = "/view/{normalUserId}")
+    public String view(@PathVariable("normalUserId") Integer normalUserId, ModelMap model) {
+        NormalUser normalUser = normalUserService.selectById(normalUserId);
+        model.addAttribute("deptName", ConstantFactory.me().getDeptName(normalUser.getDeptid()));
+        model.addAttribute("statusName", ConstantFactory.me().getStatusName(normalUser.getStatus()));
+        model.addAttribute("sexName", ConstantFactory.me().getSexName(normalUser.getSex()));
+        model.addAttribute("eduName", ConstantFactory.me().getDictsByName("学历",Integer.parseInt(normalUser.getEdu())));
+        model.addAttribute("marriedName", ConstantFactory.me().getDictsByName("婚姻状态",normalUser.getMarried()));
+        model.addAttribute("item",normalUser);
+        LogObjectHolder.me().set(normalUser);
+        return PREFIX + "normalUser_view.html";
     }
 
 

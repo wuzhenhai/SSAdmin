@@ -24,6 +24,7 @@ import cn.stylefeng.guns.core.common.constant.state.MenuStatus;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.modular.system.dao.*;
 import cn.stylefeng.guns.modular.system.model.*;
+import cn.stylefeng.guns.modular.system.warpper.LessonWarpper;
 import cn.stylefeng.roses.core.util.SpringContextHolder;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -51,6 +52,7 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
+    private LessonInfoMapper lessonInfoMapper = SpringContextHolder.getBean(LessonInfoMapper.class);
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -347,6 +349,17 @@ public class ConstantFactory implements IConstantFactory {
             parentDeptIds.add(Integer.valueOf(StrUtil.removeSuffix(StrUtil.removePrefix(s, "["), "]")));
         }
         return parentDeptIds;
+    }
+
+    @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'" + CacheKey.LESSON_NAME + "'+#lessionId")
+    public String getLessonName(Integer lessionId) {
+        LessonInfo lessonInfo = lessonInfoMapper.selectById(lessionId);
+        if(lessonInfo != null){
+            return lessonInfo.getLessonName();
+        }else{
+            return "无";
+        }
     }
 
 

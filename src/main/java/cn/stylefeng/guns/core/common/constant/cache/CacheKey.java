@@ -48,4 +48,9 @@ public interface CacheKey {
      */
     String DICT_NAME = "dict_name_";
 
+    /**
+     * 课程名称
+     */
+    String LESSON_NAME = "lesson_name_";
+
 }

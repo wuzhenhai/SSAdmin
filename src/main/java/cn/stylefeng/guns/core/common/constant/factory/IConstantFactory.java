@@ -128,4 +128,11 @@ public interface IConstantFactory {
      */
     List<Integer> getParentDeptIds(Integer deptid);
 
+    /**
+     * 根据课程id获取课程名称
+     * @param lessionId 课程id
+     * @return
+     */
+    String getLessonName(Integer lessionId);
+
 }

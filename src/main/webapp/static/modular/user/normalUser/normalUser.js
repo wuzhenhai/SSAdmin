@@ -24,9 +24,40 @@ NormalUser.initColumn = function () {
             {title: '状态', field: 'statusName', visible: true, align: 'center', valign: 'middle'},
             {title: '职位', field: 'deptstr', visible: true, align: 'center', valign: 'middle'},
             {title: '学历', field: 'eduName', visible: true, align: 'center', valign: 'middle'},
+        {
+            title: '操作',
+            field: 'id',
+            align: 'center',
+            valign: 'middle',
+            width: '6%',
+            formatter: operateFormatter //自定义方法，添加操作按钮
+        }
+
             // {title: '受洗时间', field: 'baptizedtime', visible: true, align: 'center', valign: 'middle'},
     ];
 };
+
+function operateFormatter (value, row, index) {
+    var id = value;
+    var result = "";
+    result += "<a onclick=\"ViewUserById(" + id + ")\" title='查看'>详情</a>";
+
+    return result;
+
+
+} ;
+
+function ViewUserById(id) {
+    var index = layer.open({
+        type: 2,
+        title: '用户详情',
+        area: ['800px', '420px'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/normalUser/view/' + id
+    });
+    this.layerIndex = index;
+}
 
 /**
  * 检查是否选中
