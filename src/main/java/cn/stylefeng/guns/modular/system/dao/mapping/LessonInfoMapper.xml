@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.system.dao.LessonInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.system.model.LessonInfo">
+        <id column="id" property="id" />
+        <result column="lesson_name" property="lessonName" />
+        <result column="lesson_begin_time" property="lessonBeginTime" />
+        <result column="lesson_period" property="lessonPeriod" />
+        <result column="lesson_class" property="lessonClass" />
+        <result column="teacher_info" property="teacherInfo" />
+        <result column="pre_lesson_id" property="preLessonId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, lesson_name, lesson_begin_time, lesson_period, lesson_class, teacher_info, pre_lesson_id
+    </sql>
+
+</mapper>
