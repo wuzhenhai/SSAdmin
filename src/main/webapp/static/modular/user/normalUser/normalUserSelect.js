@@ -13,7 +13,7 @@ var NormalUser = {
  */
 NormalUser.initColumn = function () {
     return [
-        {field: 'selectItem', radio: true},
+        {field: 'selectItem', checkbox: true},
             {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
             {title: '账号', field: 'account', visible: true, align: 'center', valign: 'middle'},
             {title: '名字', field: 'name', visible: true, align: 'center', valign: 'middle'},
@@ -73,55 +73,8 @@ NormalUser.check = function () {
     }
 };
 
-/**
- * 点击添加普通用户
- */
-NormalUser.openAddNormalUser = function () {
-    var index = layer.open({
-        type: 2,
-        title: '添加普通用户',
-        area: ['800px', '420px'], //宽高
-        fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/normalUser/normalUser_add'
-    });
-    this.layerIndex = index;
-};
 
-/**
- * 打开查看普通用户详情
- */
-NormalUser.openNormalUserDetail = function () {
-    if (this.check()) {
-        var index = layer.open({
-            type: 2,
-            title: '普通用户详情',
-            area: ['800px', '420px'], //宽高
-            fix: false, //不固定
-            maxmin: true,
-            content: Feng.ctxPath + '/normalUser/normalUser_update/' + NormalUser.seItem.id
-        });
-        this.layerIndex = index;
-    }
-};
 
-/**
- * 删除普通用户
- */
-NormalUser.delete = function () {
-    if (this.check()) {
-        if(confirm("是否确定删除?")){
-            var ajax = new $ax(Feng.ctxPath + "/normalUser/delete", function (data) {
-                Feng.success("删除成功!");
-                NormalUser.table.refresh();
-            }, function (data) {
-                Feng.error("删除失败!" + data.responseJSON.message + "!");
-            });
-            ajax.set("normalUserId",this.seItem.id);
-            ajax.start();
-        }
-    }
-};
 
 /**
  * 查询普通用户列表

@@ -48,6 +48,14 @@ public class NormalUserController extends BaseController {
     }
 
     /**
+     * 跳转到普通用户首页
+     */
+    @RequestMapping("select")
+    public String select() {
+        return PREFIX + "normalUserSelect.html";
+    }
+
+    /**
      * 跳转到添加普通用户
      */
     @RequestMapping("/normalUser_add")

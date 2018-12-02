@@ -20,9 +20,37 @@ LessonInfo.initColumn = function () {
             {title: '课时', field: 'lessonPeriod', visible: true, align: 'center', valign: 'middle'},
             {title: '教室', field: 'lessonClass', visible: true, align: 'center', valign: 'middle'},
             {title: '老师信息', field: 'teacherInfo', visible: true, align: 'center', valign: 'middle'},
-            {title: '前置课程', field: 'preLessonName', visible: true, align: 'center', valign: 'middle'}
+            {title: '前置课程', field: 'preLessonName', visible: true, align: 'center', valign: 'middle'},
+        {
+            title: '操作',
+            field: 'id',
+            align: 'center',
+            valign: 'middle',
+            width: '12%',
+            formatter: operateFormatter //自定义方法，添加操作按钮
+        }
     ];
 };
+
+function operateFormatter (value, row, index) {
+    var id = value;
+    var result = "";
+    result += "<a onclick=\"AddSelectStudent(" + id + ")\" title='添加'>添加选课学生</a>";
+
+    return result;
+}
+
+function AddSelectStudent() {
+    var index = layer.open({
+        type: 2,
+        title: '添加选课学生',
+        area: ['800px', '420px'], //宽高
+        fix: false, //不固定
+        maxmin: true,
+        content: Feng.ctxPath + '/normalUser/select'
+    });
+    this.layerIndex = index;
+}
 
 /**
  * 检查是否选中

@@ -1,0 +1,43 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>选择选课学生</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-lg-2 col-sm-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">组织机构</div>
+                                    <div class="panel-body dept-tree">
+                                        <ul id="deptTree" class="ztree"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-10 col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#NameCon id="s_name" name="名称" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="NormalUser.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="NormalUserTableToolbar" role="group">
+                            @if(shiro.hasPermission("/lessonInfo/addUserToLesson")){
+                                <#button name="添加该课程" icon="fa-plus" clickFun="NormalUser.addToLesson()"/>
+                            @}
+                        </div>
+                        <#table id="NormalUserTable"/>
+                        </div>
+                      </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/user/normalUser/normalUserSelect.js"></script>
+@}
