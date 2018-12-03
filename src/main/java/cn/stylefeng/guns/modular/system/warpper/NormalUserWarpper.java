@@ -54,6 +54,11 @@ public class NormalUserWarpper extends BaseControllerWrapper {
         map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
         map.put("marriedName", ConstantFactory.me().getDictsByName("婚姻状态",(Integer) map.get("married")));
         map.put("eduName", ConstantFactory.me().getDictsByName("学历",(Integer) map.get("edu")));
+        try{
+            map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
