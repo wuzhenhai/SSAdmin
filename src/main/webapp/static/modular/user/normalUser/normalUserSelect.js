@@ -68,13 +68,27 @@ NormalUser.check = function () {
         Feng.info("请先选中表格中的某一记录！");
         return false;
     }else{
-        NormalUser.seItem = selected[0];
+        NormalUser.seItem = selected;
         return true;
     }
 };
 
 
-
+NormalUser.addToLesson = function () {
+    var selected = $('#' + this.id).bootstrapTable('getSelections');
+    if(selected.length == 0){
+        Feng.info("请先选中表格中的某一记录！");
+        return false;
+    }else{
+        var arrays = new Array();// 声明一个数组
+        $(selected).each(function () {// 通过获得别选中的来进行遍历
+            arrays.push(this.id);// cid为获得到的整条数据中的一列
+        });
+        var ids = arrays.join(','); // 获得要删除的id
+        console.log(ids);
+        return true;
+    }
+};
 
 /**
  * 查询普通用户列表
