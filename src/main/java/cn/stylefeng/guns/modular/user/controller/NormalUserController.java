@@ -48,10 +48,11 @@ public class NormalUserController extends BaseController {
     }
 
     /**
-     * 跳转到普通用户首页
+     * 跳转到添加选课用户首页
      */
-    @RequestMapping("select")
-    public String select() {
+    @RequestMapping("select/{lessonId}")
+    public String select(@PathVariable Integer lessonId,ModelMap modelMap) {
+        modelMap.addAttribute("lessonId",lessonId);
         return PREFIX + "normalUserSelect.html";
     }
 

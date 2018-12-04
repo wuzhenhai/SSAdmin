@@ -87,6 +87,18 @@ public class LessonInfoController extends BaseController {
     }
 
     /**
+     * 新增课程管理
+     */
+    @RequestMapping(value = "/addToLessonByIds")
+    @ResponseBody
+    public Object addToLessonByIds(@RequestParam String ids,@RequestParam Integer lessonId) {
+        String[] idsArr = ids.split(",");
+        int id = lessonId;
+        //todo 添加选课信息到，lessonStudent表 ids是选课的学生id数组，lessonId是所选课程id -- by wzh
+        return SUCCESS_TIP;
+    }
+
+    /**
      * 删除课程管理
      */
     @RequestMapping(value = "/delete")

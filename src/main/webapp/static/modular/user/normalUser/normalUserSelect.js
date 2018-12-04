@@ -5,7 +5,8 @@ var NormalUser = {
     id: "NormalUserTable",	//表格id
     seItem: null,		//选中的条目
     table: null,
-    layerIndex: -1
+    layerIndex: -1,
+    params:{}
 };
 
 /**
@@ -86,6 +87,20 @@ NormalUser.addToLesson = function () {
         });
         var ids = arrays.join(','); // 获得要删除的id
         console.log(ids);
+        this.params["ids"] = ids;
+        this.params["lessonId"] = lessonId;
+
+        //提交信息
+        var ajax = new $ax(Feng.ctxPath + "/lessonInfo/addToLessonByIds", function(data){
+            Feng.success("添加成功!");
+            $("input[name='btSelectItem']").prop("checked",false);
+            // window.parent.NormalUser.table.refresh();
+            // NormalUserInfoDlg.close();
+        },function(data){
+            Feng.error("添加失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set(this.params);
+        ajax.start();
         return true;
     }
 };

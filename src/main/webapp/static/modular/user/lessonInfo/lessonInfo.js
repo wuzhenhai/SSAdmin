@@ -40,14 +40,14 @@ function operateFormatter (value, row, index) {
     return result;
 }
 
-function AddSelectStudent() {
+function AddSelectStudent(id) {
     var index = layer.open({
         type: 2,
         title: '添加选课学生',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/normalUser/select'
+        content: Feng.ctxPath + '/normalUser/select/' + id
     });
     this.layerIndex = index;
 }
