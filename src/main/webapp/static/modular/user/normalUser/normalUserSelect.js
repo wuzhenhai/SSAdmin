@@ -94,6 +94,7 @@ NormalUser.addToLesson = function () {
         var ajax = new $ax(Feng.ctxPath + "/lessonInfo/addToLessonByIds", function(data){
             Feng.success("添加成功!");
             $("input[name='btSelectItem']").prop("checked",false);
+            // location.reload();
             // window.parent.NormalUser.table.refresh();
             // NormalUserInfoDlg.close();
         },function(data){

@@ -52,6 +52,7 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
+    private NormalUserMapper normalUserMapper = SpringContextHolder.getBean(NormalUserMapper.class);
     private LessonInfoMapper lessonInfoMapper = SpringContextHolder.getBean(LessonInfoMapper.class);
 
     public static IConstantFactory me() {
@@ -70,6 +71,17 @@ public class ConstantFactory implements IConstantFactory {
         if (user != null) {
             return user.getName();
         } else {
+            return "--";
+        }
+    }
+
+    @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'" + CacheKey.NORMALUSER_NAME + "'+#userId")
+    public String getNormalUserNameById(Integer userId) {
+        NormalUser user = normalUserMapper.selectById(userId);
+        if(user != null){
+            return user.getName();
+        }else{
             return "--";
         }
     }

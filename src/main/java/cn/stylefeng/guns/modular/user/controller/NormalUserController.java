@@ -1,13 +1,21 @@
 package cn.stylefeng.guns.modular.user.controller;
 
+import cn.stylefeng.guns.core.common.constant.cache.CacheKey;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.modular.system.model.LessonStudent;
 import cn.stylefeng.guns.modular.system.warpper.NormalUserWarpper;
 import cn.stylefeng.guns.modular.system.warpper.UserWarpper;
+import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.stylefeng.guns.modular.system.model.NormalUser;
 import cn.stylefeng.guns.modular.user.service.INormalUserService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +47,10 @@ public class NormalUserController extends BaseController {
 
     @Autowired
     private INormalUserService normalUserService;
-
+    @Autowired
+    private ILessonStudentService lessonStudentService;
+    @Autowired
+    private CacheManager cacheManager;
     /**
      * 跳转到普通用户首页
      */
@@ -52,7 +64,17 @@ public class NormalUserController extends BaseController {
      */
     @RequestMapping("select/{lessonId}")
     public String select(@PathVariable Integer lessonId,ModelMap modelMap) {
+        List<LessonStudent> lessonStudentList = lessonStudentService.selectList(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+        if(lessonStudentList == null){
+            lessonStudentList = new ArrayList<>();
+        }else {
+            //插入学生名称
+            for(LessonStudent lessonStudent : lessonStudentList){
+                lessonStudent.setUsername(ConstantFactory.me().getNormalUserNameById(lessonStudent.getUserid()));
+            }
+        }
         modelMap.addAttribute("lessonId",lessonId);
+        modelMap.addAttribute("lessonStudentList",lessonStudentList);
         return PREFIX + "normalUserSelect.html";
     }
 
@@ -127,6 +149,14 @@ public class NormalUserController extends BaseController {
     @RequestMapping(value = "/update")
     @ResponseBody
     public Object update(NormalUser normalUser) {
+        Cache cache = cacheManager.getCache("CONSTANT");
+        String key = CacheKey.NORMALUSER_NAME + normalUser.getId();
+        Element element= cache.get( key );
+        //如果已经存在的话，移除缓存，新加新数据
+        if(element != null){
+            cache.remove(element);
+            cache.put(new Element(key,normalUser.getName()));
+        }
         normalUserService.updateById(normalUser);
         return SUCCESS_TIP;
     }

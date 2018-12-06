@@ -16,24 +16,35 @@
                                         <ul id="deptTree" class="ztree"></ul>
                                     </div>
                                 </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">已选学生</div>
+                                    <div class="panel-body dept-tree">
+                                        <ul>
+                                            @for(item in lessonStudentList){
+                                            <li>${item.username}</li>
+                                            @}
+                                        </ul>
+
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-lg-10 col-sm-9">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <#NameCon id="s_name" name="名称" />
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <#NameCon id="s_name" name="名称" />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <#button name="搜索" icon="fa-search" clickFun="NormalUser.search()"/>
+                                    </div>
+                                </div>
+                                <div class="hidden-xs" id="NormalUserTableToolbar" role="group">
+                                    @if(shiro.hasPermission("/lessonInfo/addUserToLesson")){
+                                    <#button name="添加到该课程" icon="fa-plus" clickFun="NormalUser.addToLesson()"/>
+                                    @}
+                                </div>
+                                <#table id="NormalUserTable"/>
                             </div>
-                            <div class="col-sm-3">
-                                <#button name="搜索" icon="fa-search" clickFun="NormalUser.search()"/>
-                            </div>
                         </div>
-                        <div class="hidden-xs" id="NormalUserTableToolbar" role="group">
-                            @if(shiro.hasPermission("/lessonInfo/addUserToLesson")){
-                                <#button name="添加该课程" icon="fa-plus" clickFun="NormalUser.addToLesson()"/>
-                            @}
-                        </div>
-                        <#table id="NormalUserTable"/>
-                        </div>
-                      </div>
                     </div>
                 </div>
             </div>

@@ -53,4 +53,9 @@ public interface CacheKey {
      */
     String LESSON_NAME = "lesson_name_";
 
+    /**
+     * 普通用户名称
+     */
+    String NORMALUSER_NAME = "normalUser_name_";
+
 }

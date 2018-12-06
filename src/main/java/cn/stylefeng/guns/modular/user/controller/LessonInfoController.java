@@ -1,8 +1,12 @@
 package cn.stylefeng.guns.modular.user.controller;
 
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
+import cn.stylefeng.guns.modular.system.model.LessonStudent;
 import cn.stylefeng.guns.modular.system.warpper.LessonWarpper;
+import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.kernel.model.exception.ServiceException;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.stylefeng.guns.modular.system.model.LessonInfo;
 import cn.stylefeng.guns.modular.user.service.ILessonInfoService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,8 @@ public class LessonInfoController extends BaseController {
 
     @Autowired
     private ILessonInfoService lessonInfoService;
+    @Autowired
+    private ILessonStudentService lessonStudentService;
 
     /**
      * 跳转到课程管理首页
@@ -87,15 +94,40 @@ public class LessonInfoController extends BaseController {
     }
 
     /**
-     * 新增课程管理
+     * 新增选课学生
      */
     @RequestMapping(value = "/addToLessonByIds")
     @ResponseBody
     public Object addToLessonByIds(@RequestParam String ids,@RequestParam Integer lessonId) {
+
+        //获取选课学生id
         String[] idsArr = ids.split(",");
-        int id = lessonId;
-        //todo 添加选课信息到，lessonStudent表 ids是选课的学生id数组，lessonId是所选课程id -- by wzh
-        return SUCCESS_TIP;
+        List<LessonStudent> lessonStudents = new ArrayList<>();
+        for(String idStr:idsArr){
+            int userid = Integer.parseInt(idStr);
+            LessonStudent ls = lessonStudentService.selectOne(new EntityWrapper<LessonStudent>().eq("userid",userid).and().eq("lessonid",lessonId));
+            //没有找到相同的用户添加，反之跳过
+            if(ls == null){
+                ls = new LessonStudent();
+                ls.setUserid(userid);
+                ls.setLessonid(lessonId);
+                //加入带插入列表
+                lessonStudents.add(ls);
+            }
+
+        }
+
+        if(lessonStudents.size() == 0){
+            return SUCCESS_TIP;
+        }
+        //插入到数据库
+        boolean ret = lessonStudentService.insertBatch(lessonStudents);
+        if(ret){
+            return SUCCESS_TIP;
+        }else{
+            throw new ServiceException(500,"添加错误");
+        }
+
     }
 
     /**

@@ -36,6 +36,14 @@ public interface IConstantFactory {
     String getUserNameById(Integer userId);
 
     /**
+     * 根据用户id获取普通用户名称
+     *
+     * @author stylefeng
+     * @Date 2017/5/9 23:41
+     */
+    String getNormalUserNameById(Integer userId);
+
+    /**
      * 根据用户id获取用户账号
      *
      * @author stylefeng

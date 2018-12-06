@@ -1,9 +1,12 @@
 package cn.stylefeng.guns.modular.system.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.apache.ibatis.annotations.Param;
+
 import java.io.Serializable;
 
 /**
@@ -22,8 +25,10 @@ public class LessonStudent extends Model<LessonStudent> {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String score;
+    @TableField(exist = false)
     private String username;
     private Integer userid;
+    private Integer lessonid;
     /**
      * 评价
      */
@@ -75,6 +80,14 @@ public class LessonStudent extends Model<LessonStudent> {
         return this.id;
     }
 
+    public Integer getLessonid() {
+        return lessonid;
+    }
+
+    public void setLessonid(Integer lessonid) {
+        this.lessonid = lessonid;
+    }
+
     @Override
     public String toString() {
         return "LessonStudent{" +
@@ -83,6 +96,7 @@ public class LessonStudent extends Model<LessonStudent> {
         ", username=" + username +
         ", userid=" + userid +
         ", evaluate=" + evaluate +
+        ", lessonid=" + lessonid +
         "}";
     }
 }
