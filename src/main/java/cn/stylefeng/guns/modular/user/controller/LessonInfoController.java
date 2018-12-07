@@ -5,6 +5,7 @@ import cn.stylefeng.guns.modular.system.model.LessonStudent;
 import cn.stylefeng.guns.modular.system.warpper.LessonWarpper;
 import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
+import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.springframework.stereotype.Controller;
@@ -117,12 +118,26 @@ public class LessonInfoController extends BaseController {
 
         }
 
-        if(lessonStudents.size() == 0){
-            return SUCCESS_TIP;
-        }
+        boolean ret = true;
         //插入到数据库
-        boolean ret = lessonStudentService.insertBatch(lessonStudents);
+        if(lessonStudents.size()>0) {
+            ret = lessonStudentService.insertBatch(lessonStudents);
+        }
+
+        List<LessonStudent> lessonStudentList = lessonStudentService.selectList(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+        if(lessonStudentList == null){
+            lessonStudentList = new ArrayList<>();
+        }else {
+            //插入学生名称
+            for(LessonStudent lessonStudent : lessonStudentList){
+                lessonStudent.setUsername(ConstantFactory.me().getNormalUserNameById(lessonStudent.getUserid()));
+            }
+        }
+
+
+
         if(ret){
+            SUCCESS_TIP.setData(lessonStudentList);
             return SUCCESS_TIP;
         }else{
             throw new ServiceException(500,"添加错误");

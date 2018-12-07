@@ -92,8 +92,14 @@ NormalUser.addToLesson = function () {
 
         //提交信息
         var ajax = new $ax(Feng.ctxPath + "/lessonInfo/addToLessonByIds", function(data){
+
             Feng.success("添加成功!");
             $("input[name='btSelectItem']").prop("checked",false);
+            $("#selectStudentList").find("ul").html("");
+            for(var i=0;i<data.data.length;i++){
+                var obj = data.data[i];
+                $("#selectStudentList").find("ul").append("<li>" + obj["username"] +"</li>")
+            }
             // location.reload();
             // window.parent.NormalUser.table.refresh();
             // NormalUserInfoDlg.close();
