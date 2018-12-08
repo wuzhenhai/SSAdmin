@@ -95,6 +95,37 @@ public class LessonInfoController extends BaseController {
     }
 
     /**
+     * 删除选课学生
+     */
+    @RequestMapping(value = "/delStudent")
+    @ResponseBody
+    public Object delStudent(@RequestParam Integer id,@RequestParam Integer lessonId) {
+        //删除选课学生
+        boolean ret = lessonStudentService.delete(new EntityWrapper<LessonStudent>()
+                .eq("lessonid",lessonId)
+                .and()
+                .eq("userid",id));
+
+        if(ret){
+
+            List<LessonStudent> lessonStudentList = lessonStudentService.selectList(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+            if(lessonStudentList == null){
+                lessonStudentList = new ArrayList<>();
+            }else {
+                //插入学生名称
+                for(LessonStudent lessonStudent : lessonStudentList){
+                    lessonStudent.setUsername(ConstantFactory.me().getNormalUserNameById(lessonStudent.getUserid()));
+                }
+            }
+
+            SUCCESS_TIP.setData(lessonStudentList);
+            return SUCCESS_TIP;
+        }else{
+            throw new ServiceException(500,"删除错误");
+        }
+    }
+
+    /**
      * 新增选课学生
      */
     @RequestMapping(value = "/addToLessonByIds")

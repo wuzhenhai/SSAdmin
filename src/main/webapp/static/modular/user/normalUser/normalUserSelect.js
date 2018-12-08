@@ -74,6 +74,33 @@ NormalUser.check = function () {
     }
 };
 
+function getStudentListLi(id,name){
+    return "<li class='studentName'>" + name + "<button class='delBtn' onclick='NormalUser.delStudent(" + id + ",\"" + name +"\")' >删除</button></li>"
+}
+
+
+NormalUser.delStudent = function(id,name){
+    if(confirm("确定删除[" + name + "]的选课？")){
+        this.params["id"] = id;
+        this.params["lessonId"] = lessonId;
+        //提交信息
+        var ajax = new $ax(Feng.ctxPath + "/lessonInfo/delStudent", function(data){
+
+            Feng.success("添加成功!");
+            $("#selectStudentList").find("ul").html("");
+            //动态添加选课客户
+            for(var i=0;i<data.data.length;i++){
+                var obj = data.data[i];
+                $("#selectStudentList").find("ul").append(getStudentListLi(obj['userid'],obj['username']))
+            }
+        },function(data){
+            Feng.error("删除失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set(this.params);
+        ajax.start();
+    }
+};
+
 
 NormalUser.addToLesson = function () {
     var selected = $('#' + this.id).bootstrapTable('getSelections');
@@ -96,9 +123,10 @@ NormalUser.addToLesson = function () {
             Feng.success("添加成功!");
             $("input[name='btSelectItem']").prop("checked",false);
             $("#selectStudentList").find("ul").html("");
+            //动态添加选课客户
             for(var i=0;i<data.data.length;i++){
                 var obj = data.data[i];
-                $("#selectStudentList").find("ul").append("<li>" + obj["username"] +"</li>")
+                $("#selectStudentList").find("ul").append(getStudentListLi(obj['userid'],obj['username']))
             }
             // location.reload();
             // window.parent.NormalUser.table.refresh();

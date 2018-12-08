@@ -1,4 +1,31 @@
 @layout("/common/_container.html"){
+<style>
+    .studentName{
+        list-style: none;
+        display: flex;
+        height: 24px;
+        line-height: 24px;
+        justify-content: space-between;
+    }
+    .studentName:hover{
+        background-color: #f0f0f0;
+    }
+
+    .delBtn:active{
+        background-color: black;
+        border: 1px solid white;
+        color: #fff;
+        border-radius: 3px;
+    }
+
+    .delBtn{
+        border: 1px solid #e0e0e0;
+        border-radius: 3px;
+        line-height: 18px;
+        margin: 2px 0px 2px 0px;
+        cursor:pointer;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="ibox float-e-margins">
@@ -19,9 +46,9 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">已选学生</div>
                                     <div id="selectStudentList" class="panel-body dept-tree">
-                                        <ul>
+                                        <ul style="padding-left: 10px">
                                             @for(item in lessonStudentList){
-                                            <li>${item.username}</li>
+                                            <li class="studentName" >${item.username}<button class="delBtn" onclick="NormalUser.delStudent(${item.userid},'${item.username}')" >删除</button></li>
                                             @}
                                         </ul>
 

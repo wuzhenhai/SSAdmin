@@ -147,4 +147,5 @@ $(function () {
     var ztree = new $ZTree("deptTree", "/dept/treeByTopId?topTreeId=28");
     ztree.bindOnClick(NormalUser.onClickDept);
     ztree.init();
+
 });

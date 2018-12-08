@@ -53,6 +53,7 @@ NormalUserInfoDlg.close = function() {
 NormalUserInfoDlg.collectData = function() {
     this.set('id')
     .set('account')
+    .set('avatar')
     .set('password')
     .set('salt')
     .set('name')
@@ -157,4 +158,9 @@ $(function() {
     ztree.bindOnClick(NormalUserInfoDlg.onClickDept);
     ztree.init();
     instance = ztree;
+
+    // 初始化头像上传
+    var avatarUp = new $WebUpload("avatar");
+    // avatarUp.setUploadBarId("progressBar");
+    avatarUp.init();
 });

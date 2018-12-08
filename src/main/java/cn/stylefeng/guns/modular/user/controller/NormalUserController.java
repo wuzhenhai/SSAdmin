@@ -78,6 +78,7 @@ public class NormalUserController extends BaseController {
         return PREFIX + "normalUserSelect.html";
     }
 
+
     /**
      * 跳转到添加普通用户
      */
