@@ -13,7 +13,7 @@
                         <!--</div>-->
                     <!--</div>-->
                     <#input id="account" disabled="disabled"  name="账号" value="${item.account}" underline="true"/>
-                    <#input id="password" name="密码" value="${item.password}" underline="true"/>
+                    <!--<#input id="password" name="密码" value="${item.password}" underline="true"/>-->
                     <!--<#input id="salt" name="md5密码盐" value="${item.salt}" underline="true"/>-->
                     <#input id="name" name="名字" value="${item.name}" underline="true"/>
                     <#input id="birthday" name="生日" value="${item.birthday}" underline="true"/>
@@ -32,6 +32,7 @@
                         <option value="2">冻结</option>
                     </#select>
 
+                    <#input id="phone" name="电话" value="${item.phone}" underline="true"/>
                 </div>
 
                 <div class="col-sm-6">
@@ -56,7 +57,7 @@
                     <#input id="believetime" name="信主时间" value="${item.believetime}" underline="true"/>
                     <#input id="baptizedtime" name="受洗时间" value="${item.baptizedtime}" underline="true"/>
                     <#input id="family" name="家庭成员" value="${item.family}" underline="true"/>
-                    <#input id="phone" name="电话" value="${item.phone}" underline="true"/>
+
                 </div>
             </div>
             <!-- 这是部门选择的下拉框 -->
