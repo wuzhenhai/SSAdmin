@@ -82,6 +82,16 @@ public class NormalUserController extends BaseController {
         return PREFIX + "normalUserSelect.html";
     }
 
+    /**
+     * 转excel导出
+     */
+    @RequestMapping("/saveToExcel")
+    @ResponseBody
+    public Object saveToExcel(@RequestParam(required = false) String name,@RequestParam(required = false) Integer deptid) {
+        List<Map<String, Object>> users = normalUserService.selectUsers(null,name,null,null,deptid);
+        List<Map<String, Object>> retUsers = new NormalUserWarpper(users).wrap();
+        return SUCCESS_TIP;
+    }
 
     /**
      * 跳转到添加普通用户

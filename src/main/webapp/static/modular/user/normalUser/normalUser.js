@@ -123,6 +123,21 @@ NormalUser.delete = function () {
     }
 };
 
+NormalUser.saveToExcel = function () {
+    // if (this.check()) {
+        if(confirm("是否确定导出?")){
+            var ajax = new $ax(Feng.ctxPath + "/normalUser/saveToExcel", function (data) {
+                Feng.success("导出成功!");
+            }, function (data) {
+                Feng.error("导出失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("name", $("#s_name").val());
+            ajax.set("deptid",NormalUser.deptid);
+            ajax.start();
+        }
+    // }
+};
+
 /**
  * 查询普通用户列表
  */

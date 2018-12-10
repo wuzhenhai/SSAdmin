@@ -59,8 +59,6 @@ guns:
     - dataSourceGuns
     - dataSourceBiz
 
-excelTemplatePath:
-  userlist: D:/files/met_file/excel/userlist.xls
 
 
 ---
@@ -73,6 +71,8 @@ spring:
     password: 1597532684wzh
     filters: wall,mergeStat
 
+excelTemplatePath:
+  userlist: D:/files/met_file/excel/userlist.xls
 ---
 
 spring:
