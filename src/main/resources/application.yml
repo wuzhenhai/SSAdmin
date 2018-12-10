@@ -28,6 +28,8 @@ spring:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,file:D:/files/met_file/temp/
 
 mybatis-plus:
   typeAliasesPackage: cn.stylefeng.guns.modular.system.model
@@ -45,6 +47,7 @@ spring:
     password: 1597532684wzh
     filters: wall,mergeStat
 
+
 #多数据源情况的配置
 guns:
   muti-datasource:
@@ -55,6 +58,10 @@ guns:
     dataSourceNames:
     - dataSourceGuns
     - dataSourceBiz
+
+excelTemplatePath:
+  userlist: D:/files/met_file/excel/userlist.xls
+
 
 ---
 

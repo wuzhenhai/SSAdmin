@@ -15,6 +15,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,6 +52,9 @@ public class NormalUserController extends BaseController {
     private ILessonStudentService lessonStudentService;
     @Autowired
     private CacheManager cacheManager;
+    //读取配置文件 excelTemplatePath.userlist 参数值
+    @Value("${excelTemplatePath.userlist}")
+    private String userListTempPath;
     /**
      * 跳转到普通用户首页
      */
