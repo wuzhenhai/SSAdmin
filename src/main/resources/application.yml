@@ -71,6 +71,7 @@ spring:
     password: 1597532684wzh
     filters: wall,mergeStat
 
+savePath: D:/files/met_file/temp/
 excelTemplatePath:
   userlist: D:/files/met_file/excel/userlist.xls
 ---

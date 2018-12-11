@@ -1,10 +1,13 @@
 package cn.stylefeng.guns.modular.user.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.stylefeng.guns.core.common.constant.cache.CacheKey;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.core.util.PrintUtil;
 import cn.stylefeng.guns.modular.system.model.LessonStudent;
 import cn.stylefeng.guns.modular.system.warpper.NormalUserWarpper;
 import cn.stylefeng.guns.modular.system.warpper.UserWarpper;
@@ -15,6 +18,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.stereotype.Controller;
@@ -29,10 +33,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.stylefeng.guns.modular.system.model.NormalUser;
 import cn.stylefeng.guns.modular.user.service.INormalUserService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 普通用户控制器
@@ -55,6 +58,8 @@ public class NormalUserController extends BaseController {
     //读取配置文件 excelTemplatePath.userlist 参数值
     @Value("${excelTemplatePath.userlist}")
     private String userListTempPath;
+    @Value("${savePath}")
+    private String savePath;
     /**
      * 跳转到普通用户首页
      */
@@ -87,9 +92,34 @@ public class NormalUserController extends BaseController {
      */
     @RequestMapping("/saveToExcel")
     @ResponseBody
-    public Object saveToExcel(@RequestParam(required = false) String name,@RequestParam(required = false) Integer deptid) {
+    public Object saveToExcel(@RequestParam(required = false) String name,@RequestParam(required = false) Integer deptid) throws IOException {
         List<Map<String, Object>> users = normalUserService.selectUsers(null,name,null,null,deptid);
         List<Map<String, Object>> retUsers = new NormalUserWarpper(users).wrap();
+
+        TemplateExportParams params = new TemplateExportParams(
+                userListTempPath);
+        Map<String, Object> map = new HashMap<String, Object>();
+        SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
+        String time = st.format(new Date());
+        map.put("time", time);
+        List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
+        for (int i = 0; i < retUsers.size(); i++) {
+            Map<String ,Object> old = retUsers.get(i);
+            Map<String, String> lm = new HashMap<String, String>();
+            lm.put("id", i + 1 + "");
+            lm.put("name",old.get("name").toString());
+            lm.put("sexName",old.get("sexName").toString());
+            lm.put("eduName",old.get("eduName").toString());
+            lm.put("marriedName",old.get("marriedName").toString());
+            lm.put("address",old.get("address").toString());
+            lm.put("no",old.get("id").toString());
+            listMap.add(lm);
+        }
+        map.put("maplist", listMap);
+        Workbook workbook = ExcelExportUtil.exportExcel(params, map);
+        String fileName = new Date().getTime() + "";
+        String filePath = PrintUtil.saveToExcel(workbook,savePath,fileName);
+        SUCCESS_TIP.setData(fileName);
         return SUCCESS_TIP;
     }
 
