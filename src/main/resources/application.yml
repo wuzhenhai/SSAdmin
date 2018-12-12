@@ -14,7 +14,7 @@ beetl:
 
 spring:
   profiles:
-    active: dev
+    active: test
   mvc:
     static-path-pattern: /static/**
     view:
@@ -83,6 +83,10 @@ spring:
     username: wuzhenhai
     password: 1597532684wzh
     filters: wall,mergeStat
+
+savePath: /var/www/html/yqdgb_snake/files/met_file/temp/
+excelTemplatePath:
+  userlist: /var/www/html/yqdgb_snake/files/met_file/excel/userlist.xls
 
 ---
 
