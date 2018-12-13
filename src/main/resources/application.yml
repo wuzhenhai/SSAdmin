@@ -84,9 +84,9 @@ spring:
     password: 1597532684wzh
     filters: wall,mergeStat
 
-savePath: /var/www/html/yqdgb_snake/files/met_file/temp/
+savePath: /data/files/met_file/temp/
 excelTemplatePath:
-  userlist: /var/www/html/yqdgb_snake/files/met_file/excel/userlist.xls
+  userlist: /data/files/met_file/excel/userlist.xls
 
 ---
 
