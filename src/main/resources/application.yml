@@ -62,7 +62,7 @@ guns:
 
 
 ---
-
+#开发配置
 spring:
   profiles: dev
   datasource:
@@ -79,7 +79,7 @@ savePath: D:/files/met_file/temp/
 excelTemplatePath:
   userlist: D:/files/met_file/excel/userlist.xls
 ---
-
+#测试配置
 spring:
   profiles: test
   datasource:
@@ -97,7 +97,7 @@ excelTemplatePath:
   userlist: /data/files/met_file/excel/userlist.xls
 
 ---
-
+#发布配置
 spring:
   profiles: produce
   datasource:
