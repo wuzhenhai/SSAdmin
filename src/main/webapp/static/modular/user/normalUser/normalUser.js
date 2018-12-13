@@ -128,7 +128,7 @@ NormalUser.saveToExcel = function () {
         if(confirm("是否确定导出?")){
             var ajax = new $ax(Feng.ctxPath + "/normalUser/saveToExcel", function (data) {
                 Feng.success("导出成功!");
-                var downloadUrl = "http://localhost:8081/files/" +  data.data + ".xls";
+                var downloadUrl = data.data;
                 location.href = downloadUrl;
             }, function (data) {
                 // Feng.error("导出失败!" + data.responseJSON.message + "!");

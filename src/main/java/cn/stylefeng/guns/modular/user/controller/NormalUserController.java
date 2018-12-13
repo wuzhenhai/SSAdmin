@@ -60,6 +60,8 @@ public class NormalUserController extends BaseController {
     private String userListTempPath;
     @Value("${savePath}")
     private String savePath;
+    @Value("${downloadHost}")
+    private String downloadHost;
     /**
      * 跳转到普通用户首页
      */
@@ -112,6 +114,8 @@ public class NormalUserController extends BaseController {
             lm.put("eduName",old.get("eduName").toString());
             lm.put("marriedName",old.get("marriedName").toString());
             lm.put("address",old.get("address").toString());
+            lm.put("deptstr",old.get("deptstr").toString());
+            lm.put("birthday",old.get("birthday").toString().split(" ")[0]);
             lm.put("no",old.get("id").toString());
             listMap.add(lm);
         }
@@ -119,7 +123,8 @@ public class NormalUserController extends BaseController {
         Workbook workbook = ExcelExportUtil.exportExcel(params, map);
         String fileName = new Date().getTime() + "";
         String filePath = PrintUtil.saveToExcel(workbook,savePath,fileName);
-        SUCCESS_TIP.setData(fileName);
+        String downloadUrl = downloadHost + fileName + ".xls";
+        SUCCESS_TIP.setData(downloadUrl);
         return SUCCESS_TIP;
     }
 
