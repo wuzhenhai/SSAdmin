@@ -14,7 +14,7 @@ beetl:
 
 spring:
   profiles:
-    active: dev
+    active: @spring.active@
   mvc:
     static-path-pattern: /static/**
     view:
@@ -106,3 +106,10 @@ spring:
     password: 1597532684wzh
     filters: wall,mergeStat
 
+guns:
+   file-upload-path: /data/files/upload/
+
+downloadHost: http://120.77.219.101:8081/files/
+savePath: /data/files/met_file/temp/
+excelTemplatePath:
+  userlist: /data/files/met_file/excel/userlist.xls
