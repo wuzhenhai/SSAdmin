@@ -59,6 +59,14 @@ function ViewUserById(id) {
     this.layerIndex = index;
 }
 
+NormalUser.downloadTemplateForUserList = function () {
+  location.href = templateUrl + "";
+};
+
+NormalUser.uploadExcel = function () {
+    $("#i_file_upload").click();
+};
+
 /**
  * 检查是否选中
  */
@@ -155,6 +163,37 @@ NormalUser.onClickDept = function (e, treeId, treeNode) {
     NormalUser.deptid = treeNode.id;
     NormalUser.search();
 };
+
+//文件上传事件
+function prod_data_change(){
+    var formData = new FormData();
+    var name = $("#i_file_upload").val();
+    var file = $("#i_file_upload").prop("files")[0];
+    formData.append("file",file);
+    formData.append("name",name);
+    $.ajax({
+        url : Feng.ctxPath  + '/normalUser/uploadExcel',
+        type : 'POST',
+        async : false,
+        dataType:"json",
+        data : formData,
+        // 告诉jQuery不要去处理发送的数据
+        processData : false,
+        // 告诉jQuery不要去设置Content-Type请求头
+        contentType : false,
+        beforeSend:function(){
+            console.log("正在进行，请稍候");
+        },
+        success : function(ret) {
+            if(ret.code != -1){
+                Feng.success("导入成功!");
+                NormalUser.table.refresh();
+            }else{
+                Feng.error("导入失败!");
+            }
+        }
+    });
+}
 
 $(function () {
     var defaultColunms = NormalUser.initColumn();

@@ -27,10 +27,6 @@
                             style="background-color: #ffffff !important;"/>
                     <!--<#input id="roleid" name="角色id" value="${item.roleid}" underline="true"/>-->
                     <!--<#input id="deptid" name="部门id" value="${item.deptid}" />-->
-                    <#select id="status" name="状态" underline="true" value="${item.status}">
-                        <option value="1">启用</option>
-                        <option value="2">冻结</option>
-                    </#select>
 
                     <#input id="phone" name="电话" value="${item.phone}" underline="true"/>
                 </div>
@@ -39,7 +35,7 @@
                             <!--<#input id="createtime" name="创建时间" value="${item.createtime}" underline="true"/>-->
                             <!--<#input id="version" name="保留字段" value="${item.version}" underline="true"/>-->
                     <#input id="deptstr" name="职位" value="${item.deptstr}" underline="true"/>
-                    <#input id="idcard" name="身份证" value="${item.idcard}" underline="true"/>
+                    <!--<#input id="idcard" name="身份证" value="${item.idcard}" underline="true"/>-->
 
                     <#dictSelector id="married" name ="married" code="user_married"  label="是否已婚"  underline="true"  value="${item.married}" />
                     <#dictSelector id="edu" name ="edu" code="user_edu"  label="学历"  underline="true"  value="${item.edu}" />
@@ -57,6 +53,11 @@
                     <#input id="believetime" name="信主时间" value="${item.believetime}" underline="true"/>
                     <#input id="baptizedtime" name="受洗时间" value="${item.baptizedtime}" underline="true"/>
                     <#input id="family" name="家庭成员" value="${item.family}" underline="true"/>
+                    <#select id="status" name="状态" underline="true" value="${item.status}">
+                        <option value="1">启用</option>
+                        <option value="2">冻结</option>
+                    </#select>
+
 
                 </div>
             </div>

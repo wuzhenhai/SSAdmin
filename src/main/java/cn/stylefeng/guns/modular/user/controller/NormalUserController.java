@@ -1,7 +1,10 @@
 package cn.stylefeng.guns.modular.user.controller;
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
+import cn.stylefeng.guns.core.common.annotion.BussinessLog;
 import cn.stylefeng.guns.core.common.constant.cache.CacheKey;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
@@ -9,6 +12,8 @@ import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.util.PrintUtil;
 import cn.stylefeng.guns.modular.system.model.LessonStudent;
+import cn.stylefeng.guns.modular.system.model.User;
+import cn.stylefeng.guns.modular.system.model.UserExcelEntity;
 import cn.stylefeng.guns.modular.system.warpper.NormalUserWarpper;
 import cn.stylefeng.guns.modular.system.warpper.UserWarpper;
 import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
@@ -20,7 +25,6 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +36,9 @@ import cn.stylefeng.guns.core.log.LogObjectHolder;
 import org.springframework.web.bind.annotation.RequestParam;
 import cn.stylefeng.guns.modular.system.model.NormalUser;
 import cn.stylefeng.guns.modular.user.service.INormalUserService;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -66,7 +72,8 @@ public class NormalUserController extends BaseController {
      * 跳转到普通用户首页
      */
     @RequestMapping("")
-    public String index() {
+    public String index(ModelMap modelMap) {
+        modelMap.addAttribute("templateUrl",downloadHost + "userInputTemplate.xls");
         return PREFIX + "normalUser.html";
     }
 
@@ -127,6 +134,56 @@ public class NormalUserController extends BaseController {
         SUCCESS_TIP.setData(downloadUrl);
         return SUCCESS_TIP;
     }
+
+    /**
+     * 从excel导入用户信息
+     */
+    @RequestMapping("/uploadExcel")
+    @ResponseBody
+    public Object uploadExcel(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+        ImportParams params = new ImportParams();
+        params.setHeadRows(1);
+        List<UserExcelEntity> list = ExcelImportUtil.importExcel(
+                file.getInputStream(),UserExcelEntity.class, params);
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<NormalUser> normalUserList = new ArrayList<>();
+
+        for (UserExcelEntity user : list){
+            if(user.getAccount() !=null && user.getName() != null){
+                NormalUser normalUser = new NormalUser();
+                normalUser.setAccount(user.getAccount());
+                normalUser.setCreatetime(new Date());
+                normalUser.setName(user.getName());
+                normalUser.setBaptizedtime(user.getBaptizedtime());
+                normalUser.setBelievetime(user.getBelievetime());
+                normalUser.setSex(user.getSex());
+                normalUser.setDeptid(user.getDeptid());
+                normalUser.setAddress(user.getAccount());
+                normalUser.setPhone(user.getPhone());
+                //设置默认密码111111
+                normalUser.setPassword("527220889cdfb7bf45788388f5eb5102");
+                normalUser.setSalt("p3k21");
+                //设置状态为启用
+                normalUser.setStatus(1);
+                //String dateStr = sd.format(user.getBirthday());
+                normalUserList.add(normalUser);
+            }
+        }
+        Map<String,Object> res = new HashMap<>();
+
+
+        boolean ret = normalUserService.insertBatch(normalUserList);
+        if (ret){
+            res.put("code",200);
+            res.put("msg","导入成功");
+        }else{
+            res.put("code",-1);
+            res.put("msg","导入失败");
+        }
+        return res;
+    }
+
 
     /**
      * 跳转到添加普通用户

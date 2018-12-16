@@ -37,7 +37,14 @@
                                 <#button name="删除" icon="fa-remove" clickFun="NormalUser.delete()" space="true"/>
                             @}
                             @if(shiro.hasPermission("/normalUser/saveToExcel")){
-                            <#button name="导出Excel" icon="fa-remove" clickFun="NormalUser.saveToExcel()" space="true"/>
+                                <#button name="导出Excel" icon="fa-arrow-up" clickFun="NormalUser.saveToExcel()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/normalUser/downloadTemplateForUserList")){
+                            <#button name="下载模板" icon="fa-download" clickFun="NormalUser.downloadTemplateForUserList()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/normalUser/uploadExcel")){
+                            <#button name="从excel导入用户数据" icon="fa-puzzle-piece" clickFun="NormalUser.uploadExcel()" space="true"/>
+                            <input style="display: none !important;" onchange="prod_data_change()" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" type="file" id="i_file_upload"/>
                             @}
                         </div>
                         <#table id="NormalUserTable"/>
@@ -49,4 +56,10 @@
     </div>
 </div>
 <script src="${ctxPath}/static/modular/user/normalUser/normalUser.js"></script>
+    <script>
+        var templateUrl = '${templateUrl}';
+
+
+
+    </script>
 @}

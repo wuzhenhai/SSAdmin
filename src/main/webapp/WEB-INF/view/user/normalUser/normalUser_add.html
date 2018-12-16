@@ -19,15 +19,12 @@
                             clickFun="NormalUserInfoDlg.showDeptSelectTree(); return false;"
                             style="background-color: #ffffff !important;"/>
                     <#input id="phone" name="电话" underline="true"/>
-                    <#select id="status" name="状态" underline="true">
-                        <option value="1">启用</option>
-                        <option value="2">冻结</option>
-                    </#select>
+
                 </div>
 
                 <div class="col-sm-6">
                     <#input id="deptstr" name="职位" underline="true"/>
-                    <#input id="idcard" name="身份证" underline="true"/>
+                    <!--<#input id="idcard" name="身份证" underline="true"/>-->
                     <#dictSelector id="married" name ="married" code="user_married"  label="是否已婚"  underline="true"  value="" />
                     <#dictSelector id="edu" name ="edu" code="user_edu"  label="学历"  underline="true"  value="" />
                     <#input id="email" name="电子邮件" underline="true"/>
@@ -35,7 +32,10 @@
                     <#input id="believetime" name="信主时间" underline="true"/>
                     <#input id="baptizedtime" name="受洗时间" underline="true"/>
                     <#input id="family" name="家庭成员" underline="true"/>
-
+                    <#select id="status" name="状态" underline="true">
+                        <option value="1">启用</option>
+                        <option value="2">冻结</option>
+                    </#select>
                 </div>
             </div>
             <!-- 这是部门选择的下拉框 -->

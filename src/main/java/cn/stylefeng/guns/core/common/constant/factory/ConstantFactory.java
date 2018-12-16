@@ -281,7 +281,7 @@ public class ConstantFactory implements IConstantFactory {
      * 获取性别名称
      */
     @Override
-    @Cacheable(value = Cache.CONSTANT, key = "'sex'")
+    @Cacheable(value = Cache.CONSTANT, key = "'sex_' + #sex")
     public String getSexName(Integer sex) {
         return getDictsByName("性别", sex);
     }
