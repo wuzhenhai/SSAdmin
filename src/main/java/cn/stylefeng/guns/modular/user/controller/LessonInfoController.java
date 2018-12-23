@@ -199,9 +199,35 @@ public class LessonInfoController extends BaseController {
     /**
      * 课程管理详情
      */
-    @RequestMapping(value = "/detail/{lessonInfoId}")
-    @ResponseBody
-    public Object detail(@PathVariable("lessonInfoId") Integer lessonInfoId) {
-        return lessonInfoService.selectById(lessonInfoId);
+//    @RequestMapping(value = "/detail/{lessonInfoId}")
+//    @ResponseBody
+//    public Object detail(@PathVariable("lessonInfoId") Integer lessonInfoId) {
+//        return lessonInfoService.selectById(lessonInfoId);
+//    }
+    /**
+     * 课程管理详情
+     */
+    @RequestMapping(value = "/detail/{lessonId}")
+    public String detail(@PathVariable("lessonId") Integer lessonId,ModelMap modelMap) {
+        List<LessonStudent> lessonStudentList = lessonStudentService.selectList(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+        if(lessonStudentList == null){
+            lessonStudentList = new ArrayList<>();
+        }else {
+            //插入学生名称
+            for(LessonStudent lessonStudent : lessonStudentList){
+                lessonStudent.setUsername(ConstantFactory.me().getNormalUserNameById(lessonStudent.getUserid()));
+            }
+        }
+
+        LessonInfo lessonInfo = lessonInfoService.selectById(lessonId);
+
+        //获取前置课程
+        List<LessonInfo> list = lessonInfoService.selectList(null);
+        modelMap.addAttribute("lessonList",list);
+
+        modelMap.addAttribute("lessonId",lessonId);
+        modelMap.addAttribute("item",lessonInfo);
+        modelMap.addAttribute("lessonStudentList",lessonStudentList);
+        return PREFIX + "lessonInfo_detail.html";
     }
 }
