@@ -14,16 +14,14 @@
                 <div class="col-sm-6">
                             <#input id="lessonClass" name="教室" value="${item.lessonClass}" underline="true"/>
                             <#input id="teacherInfo" name="老师信息" value="${item.teacherInfo}" underline="true"/>
-                    <#select id="preLessonId" name="前置课程" underline="true">
-                        <option value="0">无</option>
-                        @for(lesson in lessonList){
-                            @if(lesson.id == item.preLessonId){
-                            <option value="${lesson.id}" selected="selected">${lesson.lessonName}</option>
-                            @}else{
-                            <option value="${lesson.id}" >${lesson.lessonName}</option>
-                            @}
-                        @}
-                    </#select>
+
+                    @for(lesson in lessonList){
+                    @if(lesson.id == item.preLessonId){
+                    <#input id="preLesson" name="前置课程" value="${lesson.lessonName}" underline="true" />
+                    @}else{
+                    <!--<option value="${lesson.id}" >${lesson.lessonName}</option>-->
+                    @}
+                    @}
                 </div>
             </div>
 
@@ -34,30 +32,21 @@
                 <!--</div>-->
                 <div class="panel panel-default">
                     <div class="panel-heading">已选学生</div>
-                    <div id="selectStudentList" class="panel-body dept-tree">
-                        <table>
-                            <tr>
-                                <th>姓名</th>
-                            </tr>
-                            @for(item in lessonStudentList){
-                            <tr>
-                                <td>${item.username}</td>
-                            </tr>
-                            @}
 
-                        </table>
-
-                    </div>
+                    <#table id="selectStudentList" />
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-<script src="${ctxPath}/static/modular/user/lessonInfo/lessonInfo_info.js"></script>
 <script>
-    laydate.render({
-        elem: '#lessonBeginTime'
-    });
+    var lessonId = "${lessonId}";
+</script>
+<script src="${ctxPath}/static/modular/user/lessonInfo/lessonInfo_detail.js"></script>
+<script>
+//    laydate.render({
+//        elem: '#lessonBeginTime'
+//    });
 </script>
 @}

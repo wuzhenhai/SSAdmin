@@ -8,6 +8,7 @@ import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.beust.jcommander.Parameter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -229,5 +230,26 @@ public class LessonInfoController extends BaseController {
         modelMap.addAttribute("item",lessonInfo);
         modelMap.addAttribute("lessonStudentList",lessonStudentList);
         return PREFIX + "lessonInfo_detail.html";
+    }
+
+    /**
+     * 课程管理详情
+     */
+    @RequestMapping(value = "/selectList")
+    @ResponseBody
+    public Object selectList(@RequestParam Integer lessonId) {
+        List<Map<String, Object>> lessonStudentList = lessonStudentService.selectMaps(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+
+        if(lessonStudentList == null){
+            lessonStudentList = new ArrayList<>();
+        }else {
+            //插入学生名称
+            for(Map<String, Object> lessonStudent : lessonStudentList){
+                lessonStudent.put("username",ConstantFactory.me().getNormalUserNameById(
+                        Integer.parseInt(lessonStudent.get("userid").toString())));
+            }
+        }
+
+        return lessonStudentList;
     }
 }

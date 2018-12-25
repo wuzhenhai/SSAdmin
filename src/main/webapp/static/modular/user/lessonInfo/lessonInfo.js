@@ -8,6 +8,8 @@ var LessonInfo = {
     layerIndex: -1
 };
 
+
+
 /**
  * 初始化表格的列
  */
