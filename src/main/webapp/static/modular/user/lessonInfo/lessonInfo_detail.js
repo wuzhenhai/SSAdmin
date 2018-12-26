@@ -10,7 +10,10 @@ var LessonSelectTable= {
 LessonSelectTable.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '姓名', field: 'username', visible: true, align: 'center', valign: 'middle'},
+        {title: '姓名', field: 'name', visible: true, align: 'center', valign: 'middle'},
+        {title: '电话', field: 'phone', visible: true, align: 'center', valign: 'middle'},
+        {title: '地址', field: 'address', visible: true, align: 'center', valign: 'middle'},
+        {title: '部门', field: 'deptName', visible: true, align: 'center', valign: 'middle'},
     ];
 };
 

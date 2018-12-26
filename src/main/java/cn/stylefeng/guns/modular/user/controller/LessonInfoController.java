@@ -2,6 +2,7 @@ package cn.stylefeng.guns.modular.user.controller;
 
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.modular.system.model.LessonStudent;
+import cn.stylefeng.guns.modular.system.warpper.LessonStudentWarpper;
 import cn.stylefeng.guns.modular.system.warpper.LessonWarpper;
 import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -238,18 +239,8 @@ public class LessonInfoController extends BaseController {
     @RequestMapping(value = "/selectList")
     @ResponseBody
     public Object selectList(@RequestParam Integer lessonId) {
-        List<Map<String, Object>> lessonStudentList = lessonStudentService.selectMaps(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
-
-        if(lessonStudentList == null){
-            lessonStudentList = new ArrayList<>();
-        }else {
-            //插入学生名称
-            for(Map<String, Object> lessonStudent : lessonStudentList){
-                lessonStudent.put("username",ConstantFactory.me().getNormalUserNameById(
-                        Integer.parseInt(lessonStudent.get("userid").toString())));
-            }
-        }
-
-        return lessonStudentList;
+//        List<Map<String, Object>> lessonStudentList = lessonStudentService.selectMaps(new EntityWrapper<LessonStudent>().eq("lessonid",lessonId));
+        List<Map<String,Object>> lessonStudentList = lessonStudentService.getSelectStudentList(lessonId);
+        return new LessonStudentWarpper(lessonStudentList).wrap();
     }
 }

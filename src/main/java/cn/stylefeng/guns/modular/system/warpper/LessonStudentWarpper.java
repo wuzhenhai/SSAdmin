@@ -24,36 +24,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户管理的包装类
+ * 选课学生的包装类
  *
  * @author fengshuonan
  * @date 2017年2月13日 下午10:47:03
  */
-public class NormalUserWarpper extends BaseControllerWrapper {
+public class LessonStudentWarpper extends BaseControllerWrapper {
 
-    public NormalUserWarpper(Map<String, Object> single) {
+    public LessonStudentWarpper(Map<String, Object> single) {
         super(single);
     }
 
-    public NormalUserWarpper(List<Map<String, Object>> multi) {
+    public LessonStudentWarpper(List<Map<String, Object>> multi) {
         super(multi);
     }
 
-    public NormalUserWarpper(Page<Map<String, Object>> page) {
+    public LessonStudentWarpper(Page<Map<String, Object>> page) {
         super(page);
     }
 
-    public NormalUserWarpper(PageResult<Map<String, Object>> pageResult) {
+    public LessonStudentWarpper(PageResult<Map<String, Object>> pageResult) {
         super(pageResult);
     }
 
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
-        map.put("sexName", ConstantFactory.me().getSexName((Integer) map.get("sex")));
-        map.put("statusName", ConstantFactory.me().getStatusName((Integer) map.get("status")));
 //        map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
-        map.put("marriedName", ConstantFactory.me().getDictsByName("婚姻状态",(Integer) map.get("married")));
-        map.put("eduName", ConstantFactory.me().getDictsByName("学历",(Integer) map.get("edu")));
         try{
             map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
         }catch (Exception e){

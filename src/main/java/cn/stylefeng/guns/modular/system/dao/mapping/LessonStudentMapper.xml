@@ -16,4 +16,13 @@
         id, score, username, userid, evaluate
     </sql>
 
+
+    <select id="selectStudentList" resultType="java.util.HashMap">
+        select s.userid,`name`,deptid,address,phone
+        from sys_lesson_student s
+        left JOIN sys_normal_user u
+        on s.userid = u.id
+        where lessonid=${lessonId}
+    </select>
+
 </mapper>

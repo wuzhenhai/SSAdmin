@@ -25,15 +25,20 @@
                 </div>
             </div>
 
-            <div class="row btn-group-m-t">
+            <!--<div class="row btn-group-m-t">-->
                 <!--<div class="col-sm-10">-->
                     <!--<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="LessonInfoInfoDlg.editSubmit()"/>-->
                     <!--<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="LessonInfoInfoDlg.close()"/>-->
                 <!--</div>-->
-                <div class="panel panel-default">
-                    <div class="panel-heading">已选学生</div>
 
-                    <#table id="selectStudentList" />
+                <div class="panel panel-default">
+                    <div class="panel-heading">选课学生列表</div>
+                    <div class="hidden-xs" id="selectStudentListToolbar" role="group" >
+                        <#button name="导出选课列表" icon="fa-plus" clickFun="LessonInfo.exportLessonDetail()"/>
+                    </div>
+                    <div style="margin: 10px;">
+                        <#table id="selectStudentList" />
+                    </div>
                 </div>
             </div>
         </div>
