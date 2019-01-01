@@ -29,6 +29,7 @@ public class LessonStudent extends Model<LessonStudent> {
     private String username;
     private Integer userid;
     private Integer lessonid;
+    private Integer days;
     /**
      * 评价
      */
@@ -88,6 +89,14 @@ public class LessonStudent extends Model<LessonStudent> {
         this.lessonid = lessonid;
     }
 
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
     @Override
     public String toString() {
         return "LessonStudent{" +
@@ -97,6 +106,7 @@ public class LessonStudent extends Model<LessonStudent> {
         ", userid=" + userid +
         ", evaluate=" + evaluate +
         ", lessonid=" + lessonid +
+        ", days=" + days +
         "}";
     }
 }

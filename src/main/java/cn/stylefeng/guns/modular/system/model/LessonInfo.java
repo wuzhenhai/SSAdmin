@@ -27,7 +27,6 @@ public class LessonInfo extends Model<LessonInfo> {
     private Integer id;
     @TableField("lesson_name")
     private String lessonName;
-    @TableField("lesson_begin_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date lessonBeginTime;
     @TableField("lesson_period")

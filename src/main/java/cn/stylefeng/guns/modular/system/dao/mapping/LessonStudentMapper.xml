@@ -18,7 +18,7 @@
 
 
     <select id="selectStudentList" resultType="java.util.HashMap">
-        select s.userid,`name`,deptid,address,phone
+        select s.id,s.userid,`name`,deptid,address,phone,days,edu,sex
         from sys_lesson_student s
         left JOIN sys_normal_user u
         on s.userid = u.id

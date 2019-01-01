@@ -93,6 +93,17 @@ public class LessonStudentController extends BaseController {
         return SUCCESS_TIP;
     }
 
+
+    /**
+     * 修改选课学生
+     */
+    @RequestMapping(value = "/setStudentDays")
+    @ResponseBody
+    public Object setStudentDays(LessonStudent lessonStudent) {
+        lessonStudentService.updateById(lessonStudent);
+        return SUCCESS_TIP;
+    }
+
     /**
      * 选课学生详情
      */

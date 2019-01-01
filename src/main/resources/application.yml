@@ -77,7 +77,10 @@ guns:
 downloadHost: http://localhost:8082/static/
 savePath: D:/files/met_file/temp/
 excelTemplatePath:
+#普通会员列表
   userlist: D:/files/met_file/excel/userlist.xls
+  #课程详情
+  lessonDetail: D:/files/met_file/excel/lessonDetail.xls
 ---
 #测试配置
 spring:

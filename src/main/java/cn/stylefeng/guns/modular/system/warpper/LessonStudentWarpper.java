@@ -49,7 +49,8 @@ public class LessonStudentWarpper extends BaseControllerWrapper {
 
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
-//        map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
+        map.put("sexName", ConstantFactory.me().getSexName((Integer) map.get("sex")));
+        map.put("eduName", ConstantFactory.me().getDictsByName("学历",(Integer) map.get("edu")));
         try{
             map.put("deptName", ConstantFactory.me().getDeptName((Integer) map.get("deptid")));
         }catch (Exception e){

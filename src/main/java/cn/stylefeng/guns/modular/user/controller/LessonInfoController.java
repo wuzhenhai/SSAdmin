@@ -1,15 +1,21 @@
 package cn.stylefeng.guns.modular.user.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.TemplateExportParams;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
+import cn.stylefeng.guns.core.util.PrintUtil;
 import cn.stylefeng.guns.modular.system.model.LessonStudent;
 import cn.stylefeng.guns.modular.system.warpper.LessonStudentWarpper;
 import cn.stylefeng.guns.modular.system.warpper.LessonWarpper;
+import cn.stylefeng.guns.modular.system.warpper.NormalUserWarpper;
 import cn.stylefeng.guns.modular.user.service.ILessonStudentService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.beust.jcommander.Parameter;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import cn.stylefeng.guns.modular.system.model.LessonInfo;
 import cn.stylefeng.guns.modular.user.service.ILessonInfoService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 课程管理控制器
@@ -42,6 +48,13 @@ public class LessonInfoController extends BaseController {
     private ILessonInfoService lessonInfoService;
     @Autowired
     private ILessonStudentService lessonStudentService;
+    //读取配置文件 excelTemplatePath.userlist 参数值
+    @Value("${excelTemplatePath.lessonDetail}")
+    private String lessonDetailTemplate;
+    @Value("${savePath}")
+    private String savePath;
+    @Value("${downloadHost}")
+    private String downloadHost;
 
     /**
      * 跳转到课程管理首页
@@ -179,6 +192,56 @@ public class LessonInfoController extends BaseController {
     }
 
     /**
+     * 转excel导出
+     */
+    @RequestMapping("/exportLessonDetail")
+    @ResponseBody
+        public Object exportLessonDetail(@RequestParam(required = false) Integer lessonId) throws IOException {
+        LessonInfo lessonInfo = lessonInfoService.selectById(lessonId);
+        LessonInfo preLessonInfo = lessonInfoService.selectById(lessonInfo.getPreLessonId());
+
+        List<Map<String, Object>>  lessonStudentList =  lessonStudentService.getSelectStudentList(lessonId);
+        List<Map<String, Object>> retUsers = new LessonStudentWarpper(lessonStudentList).wrap();
+
+        TemplateExportParams params = new TemplateExportParams(
+                lessonDetailTemplate);
+        Map<String, Object> map = new HashMap<String, Object>();
+        SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
+        String time = st.format(new Date());
+        map.put("time", time);
+        map.put("lesson_id", lessonInfo.getId());
+        map.put("lesson_class", lessonInfo.getLessonClass());
+        map.put("lesson_begin_time", st.format(lessonInfo.getLessonBeginTime().getTime()));
+        map.put("lesson_name", lessonInfo.getLessonName());
+        map.put("lesson_period", lessonInfo.getLessonPeriod());
+        map.put("teacher_info", lessonInfo.getTeacherInfo());
+        map.put("pre_lesson_name", preLessonInfo.getLessonName());
+
+        List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
+        for (int i = 0; i < retUsers.size(); i++) {
+            Map<String ,Object> old = retUsers.get(i);
+            Map<String, String> lm = new HashMap<String, String>();
+            lm.put("id", i + 1 + "");
+            lm.put("name",old.get("name").toString());
+            lm.put("sexName",old.get("sexName").toString());
+            lm.put("eduName",old.get("eduName").toString());
+            lm.put("address",old.get("address").toString());
+            lm.put("deptName",old.get("deptName").toString());
+            lm.put("phone",old.get("phone").toString());
+            lm.put("days",old.get("days").toString());
+            lm.put("no",old.get("userid").toString());
+            listMap.add(lm);
+        }
+        map.put("maplist", listMap);
+        Workbook workbook = ExcelExportUtil.exportExcel(params, map);
+        String fileName = new Date().getTime() + "";
+        String filePath = PrintUtil.saveToExcel(workbook,savePath,fileName);
+        String downloadUrl = downloadHost + fileName + ".xls";
+        SUCCESS_TIP.setData(downloadUrl);
+        return SUCCESS_TIP;
+    }
+
+    /**
      * 删除课程管理
      */
     @RequestMapping(value = "/delete")
@@ -228,6 +291,7 @@ public class LessonInfoController extends BaseController {
         modelMap.addAttribute("lessonList",list);
 
         modelMap.addAttribute("lessonId",lessonId);
+        modelMap.addAttribute("lesson_period",lessonInfo.getLessonPeriod());
         modelMap.addAttribute("item",lessonInfo);
         modelMap.addAttribute("lessonStudentList",lessonStudentList);
         return PREFIX + "lessonInfo_detail.html";
