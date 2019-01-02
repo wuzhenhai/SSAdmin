@@ -49,6 +49,7 @@ public class LessonStudentWarpper extends BaseControllerWrapper {
 
     @Override
     protected void wrapTheMap(Map<String, Object> map) {
+        //根据相关id，获取对于的名称
         map.put("sexName", ConstantFactory.me().getSexName((Integer) map.get("sex")));
         map.put("eduName", ConstantFactory.me().getDictsByName("学历",(Integer) map.get("edu")));
         try{

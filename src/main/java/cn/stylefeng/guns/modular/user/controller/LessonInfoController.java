@@ -197,17 +197,23 @@ public class LessonInfoController extends BaseController {
     @RequestMapping("/exportLessonDetail")
     @ResponseBody
         public Object exportLessonDetail(@RequestParam(required = false) Integer lessonId) throws IOException {
+        //获取课程信息
         LessonInfo lessonInfo = lessonInfoService.selectById(lessonId);
+        //获取前置课程
         LessonInfo preLessonInfo = lessonInfoService.selectById(lessonInfo.getPreLessonId());
 
+        //获取选课学生列表
         List<Map<String, Object>>  lessonStudentList =  lessonStudentService.getSelectStudentList(lessonId);
+        //包装学生信息
         List<Map<String, Object>> retUsers = new LessonStudentWarpper(lessonStudentList).wrap();
 
+        //构造模板参数
         TemplateExportParams params = new TemplateExportParams(
                 lessonDetailTemplate);
         Map<String, Object> map = new HashMap<String, Object>();
         SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
         String time = st.format(new Date());
+        //课程信息
         map.put("time", time);
         map.put("lesson_id", lessonInfo.getId());
         map.put("lesson_class", lessonInfo.getLessonClass());
@@ -221,6 +227,7 @@ public class LessonInfoController extends BaseController {
             map.put("pre_lesson_name", "无");
         }
 
+        //选课学生列表填充
         List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
         for (int i = 0; i < retUsers.size(); i++) {
             Map<String ,Object> old = retUsers.get(i);
@@ -237,9 +244,12 @@ public class LessonInfoController extends BaseController {
             listMap.add(lm);
         }
         map.put("maplist", listMap);
+        //根据模板构造excel
         Workbook workbook = ExcelExportUtil.exportExcel(params, map);
         String fileName = new Date().getTime() + "";
+        //保存excel到指定目录
         String filePath = PrintUtil.saveToExcel(workbook,savePath,fileName);
+        //下载链接
         String downloadUrl = downloadHost + fileName + ".xls";
         SUCCESS_TIP.setData(downloadUrl);
         return SUCCESS_TIP;
