@@ -98,6 +98,7 @@ downloadHost: http://120.77.219.101:8081/files/
 savePath: /data/files/met_file/temp/
 excelTemplatePath:
   userlist: /data/files/met_file/excel/userlist.xls
+  lessonDetail: /data/files/met_file/excel/lessonDetail.xls
 
 ---
 #发布配置

@@ -215,7 +215,11 @@ public class LessonInfoController extends BaseController {
         map.put("lesson_name", lessonInfo.getLessonName());
         map.put("lesson_period", lessonInfo.getLessonPeriod());
         map.put("teacher_info", lessonInfo.getTeacherInfo());
-        map.put("pre_lesson_name", preLessonInfo.getLessonName());
+        if(preLessonInfo != null){
+            map.put("pre_lesson_name", preLessonInfo.getLessonName());
+        }else{
+            map.put("pre_lesson_name", "无");
+        }
 
         List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
         for (int i = 0; i < retUsers.size(); i++) {
