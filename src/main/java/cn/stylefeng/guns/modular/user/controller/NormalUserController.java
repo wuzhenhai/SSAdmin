@@ -122,7 +122,7 @@ public class NormalUserController extends BaseController {
             lm.put("marriedName",old.get("marriedName").toString());
             lm.put("address",old.get("address").toString());
             lm.put("deptstr",old.get("deptstr").toString());
-            lm.put("birthday",old.get("birthday").toString().split(" ")[0]);
+            lm.put("birthday",old.get("birthday").toString());
             lm.put("no",old.get("id").toString());
             listMap.add(lm);
         }
@@ -223,10 +223,16 @@ public class NormalUserController extends BaseController {
     public Object add(NormalUser normalUser) {
 
         // 判断账号是否重复
-        NormalUser theUser = normalUserService.getNormalUser(normalUser.getAccount());
-        if(theUser != null){
-            throw new ServiceException(BizExceptionEnum.USER_ALREADY_REG);
+        try{
+            NormalUser theUser = normalUserService.getNormalUser(normalUser.getAccount());
+            if(theUser != null){
+                throw new ServiceException(BizExceptionEnum.USER_ALREADY_REG);
+            }
+        }catch (Exception e){
+            //throw new ServiceException(BizExceptionEnum.USER_ALREADY_REG);
+            e.printStackTrace();
         }
+
 
         // 完善账号信息
         normalUser.setSalt(ShiroKit.getRandomSalt(5));
@@ -264,6 +270,15 @@ public class NormalUserController extends BaseController {
             cache.remove(element);
             cache.put(new Element(key,normalUser.getName()));
         }
+        if(normalUser.getBelievetime() == null){
+            normalUser.setBelievetime(new Date(0));
+        }
+        if(normalUser.getBaptizedtime() == null){
+            normalUser.setBaptizedtime(new Date(0));
+        }
+        if(normalUser.getBirthday() == null){
+            normalUser.setBirthday(new Date(0));
+        }
         normalUserService.updateById(normalUser);
         return SUCCESS_TIP;
     }
@@ -286,7 +301,12 @@ public class NormalUserController extends BaseController {
         model.addAttribute("deptName", ConstantFactory.me().getDeptName(normalUser.getDeptid()));
         model.addAttribute("statusName", ConstantFactory.me().getStatusName(normalUser.getStatus()));
         model.addAttribute("sexName", ConstantFactory.me().getSexName(normalUser.getSex()));
-        model.addAttribute("eduName", ConstantFactory.me().getDictsByName("学历",Integer.parseInt(normalUser.getEdu())));
+        try {
+            model.addAttribute("eduName", ConstantFactory.me().getDictsByName("学历",Integer.parseInt(normalUser.getEdu())));
+        }catch (Exception e){
+            model.addAttribute("eduName", "");
+
+        }
         model.addAttribute("marriedName", ConstantFactory.me().getDictsByName("婚姻状态",normalUser.getMarried()));
         model.addAttribute("item",normalUser);
         LogObjectHolder.me().set(normalUser);
